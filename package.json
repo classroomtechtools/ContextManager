@@ -1,0 +1,20 @@
+{
+  "name": "@classroomtechtools/contextmanager",
+  "version": "1.0.1",
+  "description": "A python-esque context manager for appscripts",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/classroomtechtools/npm-contextmanager.git"
+  },
+  "author": "Adam Morris <classroomtechtools.ctt@gmail.com> (https://classroomtechtools.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/classroomtechtools/npm-contextmanager/issues"
+  },
+  "homepage": "https://github.com/classroomtechtools/npm-contextmanager#readme"
+}
