@@ -5,7 +5,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava"
+  },
+  "ava": {
+    "verbose": true
   },
   "repository": {
     "type": "git",
@@ -16,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/classroomtechtools/npm-contextmanager/issues"
   },
-  "homepage": "https://github.com/classroomtechtools/npm-contextmanager#readme"
+  "homepage": "https://github.com/classroomtechtools/npm-contextmanager#readme",
+  "devDependencies": {
+    "ava": "^3.10.1"
+  }
 }
