@@ -18,7 +18,7 @@ export class ContextManager {
   constructor ({ state=null, settings={} }={}) {
     // default settings
     this[_settings_] = parseSettings(settings);
-    this.state = state;
+    this.state = state;  // setter will change this[_state_]
   }
 
   static new_ (...params) {
@@ -102,7 +102,7 @@ export class ContextManager {
 
   dispatchError (err) {
     // error handler can return null to indicate it should be swallowed
-    return this[_settings_].error.call(this.state, err) === null;
+    return this[_settings_].error.call(this[_state_], err) === null;
   }
 
 
@@ -114,33 +114,18 @@ export class ContextManager {
     // defaultObject can be overwritten at class level in case programmer wants to
     this[_state_] = this[_state_] ? this[_state_] : this.defaultObject();
 
-    // get the parameter
-    const param = this[_settings_].param;
-    let callError = true;
-    let swallowError = false;
-
     try {
-      try {
 
-        this[_settings_].head.call(this[_state_]);
-        result = func.call(this[_state_], param);
-
-      } catch (err) {
-          // set swallowErr to result, but we have to throw to avoid calling func
-          callError = false;
-          swallowError = this.dispatchError(err);
-          throw err;
-      }
+      this[_settings_].head.call(this[_state_]);
+      result = func.call(this[_state_], this[_settings_].param);
 
     } catch (err) {
       // execute the error handler
 
-      // if error happened, call error function
-      // if it returns null swallow it, otherwise reraise
-      if (callError)
-        this.dispatchError(err);
-      if (!swallowError)
+      if (!this.dispatchError(err))
         throw err;
+      else
+        result = err;
 
     } finally {
 
