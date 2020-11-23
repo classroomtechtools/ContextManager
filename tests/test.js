@@ -1,8 +1,9 @@
 import test from 'ava';
-import {ContextManager} from '../index.js';
+import {ContextManager} from '../src/modules/ContextManager.js';
+
 
 test(".state saves and is available after execution", t => {
-  let ctx = new ContextManager();
+  let ctx = ContextManager.new_();
   ctx.with(function () {
     this.hi = 'hi'
   });
@@ -24,7 +25,28 @@ test("subclassing to get different defaultObject", t => {
   t.deepEqual(actual, expected);
 });
 
-test("error handler receives error and can swallow error", t => {
+test("default error handler does not swallow error", t => {
+  const ctx = ContextManager.new_();
+  t.throws(function () {
+    ctx.with(function () {
+      throw new Error("Error");
+    });
+  }, {instanceOf:Error});
+});
+
+test("default error handler does not swallow error in enter", t => {
+  const ctx = ContextManager.new_();
+  ctx.enter = function () {
+    throw new Error("Yikes");
+  }
+  t.throws(function () {
+    ctx.with(function () {
+
+    });
+  }, {instanceOf:Error});
+});
+
+test("error handler swallows error by returning null", t => {
   let ctx = new ContextManager();
   ctx.error = function (err) {
     this.errorMessage = err.toString();
@@ -56,14 +78,66 @@ test("Saves state between enter and exit calls, return this", t => {
   t.deepEqual(actual, expected);
 });
 
-test("Can be passed a parameter", t => {
+test(".param is passed to with as parameter", t => {
   let ctx = new ContextManager();
-  const param = "param";
-  ctx.param = param;
+  const p = "param";
+  ctx.param = p;
   ctx.with(function  (param) {
     this.param = param;
   });
   let actual = ctx.state;
   let expected = {param:param};
   t.deepEqual(actual, expected);
+});
+
+test("withLock", t => {
+  class MockedSS {
+    static flush () {
+      return null;
+    }
+  }
+  class MockedLock {
+    waitLock (timeout) {
+      return null;
+    }
+
+    releaseLock () {
+      return null;
+    }
+  }
+  class MockedLockService {
+    static getScriptLock () {
+      return new MockedLock();
+    }
+  }
+  class MockedLockThrows extends (MockedLock) {
+    waitLock (timeout) {
+      throw new Error("Timeout!");
+    }
+  }
+  class MockedLockServiceThrows {
+    static getScriptLock () {
+      return new MockedLockThrows();
+    }
+  }
+
+  let expected = 'inside body';
+  let dependencies = {
+    LockService_: MockedLockService,
+    SpreadsheetApp_: MockedSS
+  };
+  const body = ContextManager.withWaitLock(300, dependencies);
+  const actual = body(function () {
+    return expected;
+  });
+  t.is(actual, expected);
+
+  dependencies.LockService_ = MockedLockServiceThrows;
+  t.throws(function () {
+    const body = ContextManager.withWaitLock(300, dependencies);
+    body(function () {
+        // nothing
+    });
+  }, {instanceOf: Error});
+
 });

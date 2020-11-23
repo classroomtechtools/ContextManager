@@ -1,9 +1,19 @@
+/* Bundle as defined from all files in src/modules/*.js */
+const Import = Object.create(null);
+
+'use strict';
+
+(function (exports, window) {
+// provide global (danger zone)
+exports.__window = window;
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 // private stuff
 const _settings_ = Symbol('settings');
 const _state_ = Symbol('state');
 
-let parseSettings = function (opt) {
+const parseSettings = function (opt) {
   opt = opt || {};
   opt.param = opt.param || null;
   opt.enter = opt.enter || function () {};
@@ -11,13 +21,17 @@ let parseSettings = function (opt) {
   opt.error = opt.error || function () {};
   opt.proxy = opt.proxy || false;
   return opt;
-}
+};
 
-export class ContextManager {
+class ContextManager {
 
   constructor (settings={}) {
     // default settings
     this[_settings_] = parseSettings(settings);
+  }
+
+  static new (...params) {
+    return new ContextManager(...params);
   }
 
   get settings () {
@@ -90,3 +104,8 @@ export class ContextManager {
     return result;
   }
 }
+
+exports.ContextManager = ContextManager;
+
+})(Import, this);
+try{exports.Import = Import;}catch(e){}
