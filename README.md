@@ -1,17 +1,33 @@
 # ContextManager
 
-Create a "body function," which has the following "set up" and "tear down" abilities:
+Create a "body function" which performs some target work, but which has some sort of "set up" and/or "tear down" work to do:
 
 - Define a "head function" that executes immediately prior to the body function
-- Define an "tail function" that executes upon completion of the body function, even if an error occurs
-- Define an "error function" that is called whenever an error occurs. If the error function returns null, the error is swallowed
+- Define a "tail function" that executes upon completion of the body function, even if an error occurs
+- Define an "error function" that is called when an error happens inside head, body, or tail. If the error function returns null, the error is swallowed.
 - Save state by using the `this` keyword from within head, body, or tail
 
-All of the above are optional.
+**Sequence**
+
+By default, this is the order in which execution occurs. Please see below example for more clarity:
+
+- `1` is head function
+- `2` is body function
+- `3` is tail function
+- `-1` is error function
+
+Regular sequence (with no error occurring) `1 2 3` (head body tail)
+
+If error happens in head function, sequence is `1 -1 3` (head error tail, but not body).
+
+If an error occurs in body function, sequence is:
+`1 2 -1 3` (head body error tail) 
+
+*Note*: If an error occurs in the error function, then the sequence will be interrupted at the `-1` stage with no further execution; this is the intended behaviour.
 
 **Example**
 
-A common pattern where this library would be useful is when you are working with spreadsheets and the `LockService` in tandem. In order to prevent your own script from overwriting your own updates, you need to create a lock at the script level, then do your writes, then you need to call `SpreadsheetApp.flush()` to write changes. When you enable the lock, you might get an error (as `waitLock` throws an error if unable to establish a lock).
+A common pattern where this library would be useful is when you are working with spreadsheets and the `LockService` in tandem. In order to prevent your own script from overwriting your own updates, you need to create a lock at the script level, then do your writes, then you need to call `SpreadsheetApp.flush()` to write changes. When you enable the lock, you might get an error (as `waitLock` throws an error if it was unable to establish a lock).
 
 ```js
 /* 
@@ -44,25 +60,19 @@ function myFunction () {
   context.error = function (err) {
     console.log(-1);
     this.error = err;
+    return null;  // "instructs context manager to 'swallow' the error"
   };
+
   return context.execute();
+  //             ^--- this actually executes it all
 }
-
-/* if no error, output is:
-   1 2 3 (head body tail) */
-/* if error happens in head function, output is:
-   1 -1 3 (head error tail, but not body) */
-/* if error occurs in body function, output is:
-   1 2 -1 3 (head body error tail) */
 ```
-
-With the above code, the body function's execution is surrounded by the `head` function before, and the `tail` function after, *even if an error occurs*.
 
 ## Getting Started
 
-Project code is: ``
+Project code is: ` `. The default identifier is `ContextManager`, you use the `.new_` function to get the context variable, and then define head, body, and tail as needed.
 
-The following silly example illustrates how `this` holds state throughout each of the functions:
+The following silly example illustrates how `this` holds state throughout each of the functions, and how you can use `.execute` to pass parameters which can change how the body function works:
 
 ```js
 function myFunction () {
@@ -72,45 +82,47 @@ function myFunction () {
     // save an array to state
     ctx.head = function () {
         this.noun = "World";
-        this.log = [];
     };
-    
-    // output the array to the logger
-    ctx.tail = function () {
-        Logger.log(this.log.join('\n'));
-    };
-    
+      
     // execute the main body, head and tail will be called
-    ctx.body = function () {
-        this.log.push(`Hello ${this.noun}`);
+    ctx.body = function (delim) {
+        this.expression = `Hello${delim}${this.noun}`;
     };
 
-    ctx.execute();
-    // Logger outputs "Hello World"
+    // output the array to the logger
+    ctx.tail = function () {
+        Logger.log(this.expression);
+    };
+
+    ctx.execute(', ');
+    // Logger outputs "Hello, World"
+
+    ctx.execute(' ');
+    // Logger outputs "Hello World" (with no comma)
 }
 ```
 
-By default, `this` is just a regular object. If you want it to be something else, then you can set state ahead of time:
+By default, `this` is just a regular object. If you want it to be something else, then you can set its state ahead of time:
 
 ```js
 function myFunction () {
-  let ctx = ContextManager.new_([]);  // pass array which is state object
+  let ctx = ContextManager.new_({state: []});  // pass array which is state object
 
   ctx.head = function () { 
-    this.log.push('heading');
+    this.push('heading');
   };
   ctx.tail = function () { 
-    this.log.push('tailing');
+    this.push('tailing');
     Logger.log(this.log.join('\n'));
   };
   ctx.error = function () { 
-    this.log.push('See no error, hear no error');
+    this.push('See no error, hear no error');
     return null;  // return null swallows the error
   };   
   ctx.param = "World";
 
   ctx.with(function (text) {
-    this.log.push('Inside body');
+    this.push('Inside body');
     throw Error("Error here, but does not actually error out");	
   });
 }
