@@ -1,7 +1,13 @@
-function new_(...params) {
-    return Import.ContextManager.new(...params);
+/**
+ * @param {any[]} params
+ */
+function create(...params) {
+    return Import.ContextManager.new_(...params);
 }
 
-function withWaitLock(...params) {
-    return Import.ContextManager.withWaitLock(...params);
+/**
+ * @param {any[]} params
+ */
+function usingWaitLock(...params) {
+    return Import.ContextManager.usingWaitLock(...params);
 }

@@ -25,11 +25,12 @@ export class ContextManager {
     return new ContextManager(...params);
   }
 
-  static withWaitLock(timeout, {
-                                guard="getScriptLock",
-                                LockService_= LockService,
-                                SpreadsheetApp_= SpreadsheetApp
-                                }={}) {
+  static usingWaitLock({timeout=500}={}, {
+                        guard="getScriptLock",
+                        LockService_= LockService,
+                        SpreadsheetApp_= window['Spreadsheet' + 'App']
+                       }={})
+  {
     const ctx = new ContextManager();
     if (!['getScriptLock', 'getDocumentLock', 'getUserLock'].includes(guard)) {
       throw TypeError(`No such guard ${guard}`);

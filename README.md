@@ -70,7 +70,7 @@ function myFunction () {
 
 ## Getting Started
 
-Project code is: ` `. The default identifier is `ContextManager`, you use the `.new_` function to get the context variable, and then define head, body, and tail as needed.
+Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.new_` function to get the context variable, and then define head, body, and tail as needed.
 
 The following silly example illustrates how `this` holds state throughout each of the functions, and how you can use `.execute` to pass parameters which can change how the body function works:
 

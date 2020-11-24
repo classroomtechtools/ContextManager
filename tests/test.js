@@ -211,7 +211,7 @@ test("withLock", t => {
     LockService_: MockedLockService,
     SpreadsheetApp_: MockedSS
   };
-  const ctx = ContextManager.withWaitLock(300, dependencies);
+  const ctx = ContextManager.usingWaitLock({timeout: 300}, dependencies);
   ctx.body = function () {
     return expected;
   };
@@ -220,7 +220,7 @@ test("withLock", t => {
 
   dependencies.LockService_ = MockedLockServiceThrows;
   t.throws(function () {
-    const ctx = ContextManager.withWaitLock(300, dependencies);
+    const ctx = ContextManager.usingWaitLock(300, dependencies);
     ctx.with(function () {
         // nothing
     });
