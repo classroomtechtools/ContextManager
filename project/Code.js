@@ -1,13 +1,23 @@
 /**
- * @param {any[]} params
+ * @param {Object} [state]
+ * @param {Object} [dependencies]
+ * @return Context
  */
-function create(...params) {
-    return Import.ContextManager.new_(...params);
+function create(state=null, dependencies={}) {
+    return Import.ContextManager.create({state}, dependencies);
 }
 
 /**
- * @param {any[]} params
+ * @param {Number} [timeout]
+ * @param {String} [guard]
  */
-function usingWaitLock(...params) {
-    return Import.ContextManager.usingWaitLock(...params);
+function usingWaitLock(timeout=500, guard="getScriptLock") {
+    return Import.ContextManager.usingWaitLock({timeout}, {guard});
+}
+
+/**
+ * @return ContextManager
+ */
+function lib() {
+    return Import.ContextManager;
 }

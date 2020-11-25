@@ -27,7 +27,7 @@ export class ContextManager {
   static usingWaitLock({timeout=500}={}, {
                         guard="getScriptLock",
                         LockService_= LockService,
-                        SpreadsheetApp_= window['Spreadsheet' + 'App']
+                        SSA_= window['Spreadsheet' + 'App']
                        }={})
   {
     const ctx = new ContextManager();
@@ -41,7 +41,7 @@ export class ContextManager {
     };
 
     ctx.tail = function () {
-        SpreadsheetApp_.flush();
+        SSA_.flush();
         this.lock.releaseLock();
     };
 
