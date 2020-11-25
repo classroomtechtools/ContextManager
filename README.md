@@ -4,10 +4,41 @@ Create a "body function" which performs some target work, but which has some sor
 
 - Define a "head function" that executes immediately prior to the body function
 - Define a "tail function" that executes upon completion of the body function, even if an error occurs
-- Define an "error function" that is called when an error happens inside head, body, or tail. If the error function returns null, the error is swallowed.
-- Save state by using the `this` keyword from within head, body, or tail
+- Define an "error function" that is called when an error happens inside head, body, or tail.
+- Save "state" by using the `this` keyword from within head, body, or tail
 
-**Sequence**
+## Getting Started
+
+Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.create` function to get the context variable, on which you declare the head, body, and tail as needed. See below for details.
+
+## Example 1
+
+```js
+/**
+ * A simple (and useless) context manager that illustrates patterns
+ */
+function myFunction () {
+  const context = ContextManager.create();
+  context.head = function (param) {
+    // this will be state, by default just an object
+    this.inHead = true;
+  };
+  context.body = function (param) {
+    this.inBody = true;
+    return param;
+  };
+  context.tail = function (param) {
+    this.inTail = true;
+  }
+  const result = context.execute("echo");
+  Logger.log(result);  
+  //     echo
+  Logger.log(context.state);  
+  //     {inHead: true, inTail: true, inBody: true};
+}
+```
+
+**Sequences**
 
 By default, this is the order in which execution occurs. Please see below example for more clarity:
 
@@ -23,9 +54,20 @@ If error happens in head function, sequence is `1 -1 3` (head error tail, but no
 If an error occurs in body function, sequence is:
 `1 2 -1 3` (head body error tail) 
 
-*Note*: If an error occurs in the error function, then the sequence will be interrupted at the `-1` stage with no further execution; this is the intended behaviour.
+If an error occurs in the tail function, sequence is:
+`1 2 3, -1` (head, body, tail, error)
 
-**Example**
+*Note*: If an error occurs in the error function, then the sequence will be interrupted at the `-1` stage with no further execution; that is the intended behaviour.
+
+**Error Handling**
+
+If the error function returns `null` (which by default it does not), the error is "swallowed" (not raised as an error). However, the error object itself is returned by `.execute`.
+
+**Body returning value**
+
+The body can return some value which is returned from `.execute`. If an error occurs in body function and the error function returns null, the error itself is returned instead. If an error occurs in the tail function (and thus the body function has successfully return some value or `undefined` if no explicit return) and the error function returns `null`, then the error object is given additional property `ctx.body.result` with the return value of the body function.
+
+## Application
 
 A common pattern where this library would be useful is when you are working with spreadsheets and the `LockService` in tandem. In order to prevent your own script from overwriting your own updates, you need to create a lock at the script level, then do your writes, then you need to call `SpreadsheetApp.flush()` to write changes. When you enable the lock, you might get an error (as `waitLock` throws an error if it was unable to establish a lock).
 
@@ -35,7 +77,7 @@ A common pattern where this library would be useful is when you are working with
 /* @returns error message if error happens, else null
 */
 function myFunction () {
-  const context = ContextManager.new_();  // creates class
+  const context = ContextManager.create();  // creates instance of class
   // define head function
   context.head = function () {
     console.log(1);
@@ -68,16 +110,14 @@ function myFunction () {
 }
 ```
 
-## Getting Started
-
-Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.new_` function to get the context variable, and then define head, body, and tail as needed.
+## Example 2
 
 The following silly example illustrates how `this` holds state throughout each of the functions, and how you can use `.execute` to pass parameters which can change how the body function works:
 
 ```js
 function myFunction () {
     // initialize
-    let ctx = ContextManager.new_();
+    let ctx = ContextManager.create();
     
     // save an array to state
     ctx.head = function () {
@@ -106,7 +146,7 @@ By default, `this` is just a regular object. If you want it to be something else
 
 ```js
 function myFunction () {
-  let ctx = ContextManager.new_({state: []});  // pass array which is state object
+  let ctx = ContextManager.create({state: []});  // pass array which is state object
 
   ctx.head = function () { 
     this.push('heading');

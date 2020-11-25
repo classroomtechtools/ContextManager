@@ -2,7 +2,7 @@ import test from 'ava';
 import {ContextManager} from '../src/modules/ContextManager.js';
 
 test("set context.body and context.execute for multiple invocations", t => {
-  const ctx = ContextManager.new_();
+  const ctx = ContextManager.create();
   ctx.body = function (param) {
     this.hi = 'hi';
     return param;
@@ -14,53 +14,8 @@ test("set context.body and context.execute for multiple invocations", t => {
   t.is(result2, 2)
 });
 
-test("Sequence for when error occurs in head is 1, -1, 3", t => {
-  const ctx = ContextManager.new_();
-  const actual = [];
-  let expected;
-  expected = [1, -1, 3];
-  ctx.head = function () {
-    actual.push(1);
-    throw new Error("Yikes!");
-  };
-  ctx.tail = function () {
-    actual.push(3);
-  };
-  ctx.error = function (err) {
-    actual.push(-1);
-    return null;
-  };
-  ctx.with(function () {
-    actual.push(2);
-  });
-  t.deepEqual(actual, expected);
-});
-
-test("Sequence for when error occurs in body is 1, 2, -1, 3", t => {
-  const ctx = ContextManager.new_();
-  const actual = [];
-  let expected;
-  expected = [1, 2, -1, 3];
-  ctx.head = function () {
-    actual.push(1);
-  };
-  ctx.body = function () {
-    actual.push(2);
-    throw new Error("error");
-  };
-  ctx.tail = function () {
-    actual.push(3);
-  };
-  ctx.error = function (err) {
-    actual.push(-1);
-    return null;
-  };
-  ctx.execute();
-  t.deepEqual(actual, expected);
-});
-
 test("this keyword holds state, is available via state property", t => {
-  const ctx = ContextManager.new_();
+  const ctx = ContextManager.create();
   ctx.body = function () {
     this.hi = 'hi'
   };
@@ -71,7 +26,7 @@ test("this keyword holds state, is available via state property", t => {
 });
 
 test("pass array as state to contructor", t => {
-  const ctx = ContextManager.new_({ state: [] });
+  const ctx = ContextManager.create({ state: [] });
   ctx.head = function () {
     this.push(1);
   };
@@ -87,7 +42,7 @@ test("pass array as state to contructor", t => {
 });
 
 test("state can be set, if null reverts to the default object", t => {
-  const ctx = ContextManager.new_();
+  const ctx = ContextManager.create();
   ctx.state = [];
   ctx.with(function () {
     this.push(1);
@@ -107,41 +62,6 @@ test("subclassing to get different defaultObject", t => {
   });
   let actual = ctx.state;
   let expected = ['hi'];
-  t.deepEqual(actual, expected);
-});
-
-test("default error handler does not swallow error", t => {
-  const ctx = ContextManager.new_();
-  t.throws(function () {
-    ctx.with(function () {
-      throw new Error("Error");
-    });
-  }, {instanceOf:Error});
-});
-
-test("default error handler does not swallow error in head", t => {
-  const ctx = ContextManager.new_();
-  ctx.head = function () {
-    throw new Error("Yikes");
-  }
-  t.throws(function () {
-    ctx.with(function () {
-
-    });
-  }, {instanceOf:Error});
-});
-
-test("error handler swallows error by returning null", t => {
-  let ctx = new ContextManager();
-  ctx.error = function (err) {
-    this.errorMessage = err.toString();
-    return null;
-  };
-  ctx.with(function () {
-    throw new Error("message");
-  });
-  let actual = ctx.state;
-  let expected = {errorMessage: "Error: message"};
   t.deepEqual(actual, expected);
 });
 
@@ -225,5 +145,17 @@ test("withLock", t => {
         // nothing
     });
   }, {instanceOf: Error});
+});
+
+test("param is sent to head, body, and tail", t => {
+  const ctx = ContextManager.create({state: []});
+  const func = function (param) {
+    this.push(param);
+  }
+  ctx.head = func;
+  ctx.body = func;
+  ctx.tail = func;
+  ctx.execute('p');
+  t.deepEqual(ctx.state, ['p', 'p', 'p']);
 });
 

@@ -1,13 +1,22 @@
 /**
- * @param {any[]} params
+ * @param {Object} [state]
+ * @param {Object} [dependencies]
+ * @return Context
  */
-function create(...params) {
-    return Import.ContextManager.new_(...params);
+function create(state=null, dependencies={}) {
+    return Import.ContextManager.new_({state:state}, dependencies);
 }
 
 /**
- * @param {any[]} params
+ * @param {Number} timeout
  */
-function usingWaitLock(...params) {
+function usingWaitLock(timeout) {
     return Import.ContextManager.usingWaitLock(...params);
+}
+
+/**
+ * @return ContextManager
+ */
+function lib() {
+
 }

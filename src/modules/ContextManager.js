@@ -9,19 +9,18 @@ const parseSettings = function (opt) {
   opt.head = opt.head || function () {};
   opt.tail = opt.tail || function () {};
   opt.error = opt.error || function (err) {};
-  opt.proxy = opt.proxy || false;
   return opt;
 }
 
 export class ContextManager {
 
   constructor ({ state=null, settings={} }={}) {
-    // default settings
-    this[_settings_] = parseSettings(settings);
-    this.state = state;  // setter will change this[_state_]
+    // setters will use the symbol properties to set accordingly
+    this.settings = settings;
+    this.state = state;
   }
 
-  static new_ (...params) {
+  static create (...params) {
     return new ContextManager(...params);
   }
 
@@ -83,6 +82,10 @@ export class ContextManager {
     this[_state_] = obj === null ? this.defaultObject() : obj;
   }
 
+  set settings (obj) {
+    this[_settings_] = parseSettings(obj);
+  }
+
   get state () {
     return this[_state_];
   }
@@ -96,7 +99,7 @@ export class ContextManager {
   }
 
   execute (param) {
-    if (!this[_settings_].body) throw new Error("No _body");
+    if (!this[_settings_].body) throw new Error("Body method for context has not been defined");
     this[_settings_].param = param;
     return this.with(this[_settings_].body);
   }
@@ -108,7 +111,7 @@ export class ContextManager {
 
 
   with (func) {
-    let result;
+    let result = undefined;
 
     // if state has already been defined (by manually setting), let it be, otherwise
     // set to the default object (which is an object)
@@ -117,7 +120,7 @@ export class ContextManager {
 
     try {
 
-      this[_settings_].head.call(this[_state_]);
+      this[_settings_].head.call(this[_state_], this[_settings_].param);
       result = func.call(this[_state_], this[_settings_].param);
 
     } catch (err) {
@@ -131,7 +134,16 @@ export class ContextManager {
     } finally {
 
       // execute the tail
-      this[_settings_].tail.call(this[_state_]);
+      try {
+        this[_settings_].tail.call(this[_state_], this[_settings_].param);
+      } catch (err) {
+        if (!this.dispatchError(err))
+          throw err;
+        else {
+          // make copy of err and result so we don't end up nesting it
+          result = Object.assign(err, {"ctx.body.result": result});
+        }
+      }
 
     }
 
