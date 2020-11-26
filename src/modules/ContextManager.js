@@ -53,10 +53,6 @@ export class ContextManager {
     return ctx;
   }
 
-  get settings () {
-    return this[_settings_];
-  }
-
   // set body (func) {
   //   this[_settings_]._body = func;
   // }
@@ -77,6 +73,10 @@ export class ContextManager {
     this[_settings_].param = obj;
   }
 
+  get state () {
+    return this[_state_];
+  }
+
   set state (obj) {
     // expose the state property so that it can be set
     this[_state_] = obj === null ? this.defaultObject() : obj;
@@ -86,9 +86,6 @@ export class ContextManager {
     this[_settings_] = parseSettings(obj);
   }
 
-  get state () {
-    return this[_state_];
-  }
 
   defaultObject () {
     return {};
