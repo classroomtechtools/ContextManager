@@ -129,7 +129,7 @@ test("withLock", t => {
   let expected = 'inside body';
   let dependencies = {
     LockService_: MockedLockService,
-    SpreadsheetApp_: MockedSS
+    SSA_: MockedSS
   };
   const ctx = ContextManager.usingWaitLock({timeout: 300}, dependencies);
   ctx.body = function () {

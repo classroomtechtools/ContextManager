@@ -99,9 +99,12 @@ export class ContextManager {
   }
 
   execute (param) {
-    if (!this[_settings_].body) throw new Error("Body method for context has not been defined");
-    this[_settings_].param = param;
-    return this.with(this[_settings_].body);
+    const settings = this[_settings_];
+    if (!settings.body) throw new Error("Body method for context has not been defined");
+    settings.param = param;
+
+    // return the result of "with(function () { }) where the body is the function"
+    return this.with(settings.body);
   }
 
   dispatchError (err) {
@@ -109,19 +112,23 @@ export class ContextManager {
     return this[_settings_].error.call(this[_state_], err) === null;
   }
 
-
+  /**
+   * Main engine of the context manager
+   */
   with (func) {
-    let result = undefined;
+    let   result = undefined,
+          state = this[_state_];
+    const settings = this[_settings_];
 
     // if state has already been defined (by manually setting), let it be, otherwise
     // set to the default object (which is an object)
     // defaultObject can be overwritten at class level in case programmer wants to
-    this[_state_] = this[_state_] ? this[_state_] : this.defaultObject();
+    state = state ? state : this.defaultObject();
 
     try {
 
-      this[_settings_].head.call(this[_state_], this[_settings_].param);
-      result = func.call(this[_state_], this[_settings_].param);
+      settings.head.call(state, settings.param);
+      result = func.call(state, settings.param);
 
     } catch (err) {
       // execute the error handler
@@ -135,14 +142,18 @@ export class ContextManager {
 
       // execute the tail
       try {
-        this[_settings_].tail.call(this[_state_], this[_settings_].param);
+
+        settings.tail.call(state, settings.param);
+
       } catch (err) {
+
         if (!this.dispatchError(err))
           throw err;
         else {
           // make copy of err and result so we don't end up nesting it
           result = Object.assign(err, {"ctx.body.result": result});
         }
+
       }
 
     }
