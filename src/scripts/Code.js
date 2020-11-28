@@ -11,7 +11,7 @@ function create(state=null, settings={}) {
  * @param {Number} [timeout]
  * @param {String} [guard]
  */
-function usingWaitLock(timeout=500, guard="getScriptLock", dependencies={}) {
+function usingWaitLock(timeout=500, guard="script", dependencies={}) {
     return Import.ContextManager.usingWaitLock({timeout, guard, ...dependencies});
 }
 
