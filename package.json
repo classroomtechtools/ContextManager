@@ -1,6 +1,6 @@
 {
   "name": "@classroomtechtools/contextmanager",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "A python-esque context manager for appscripts",
   "type": "module",
   "scripts": {
@@ -22,7 +22,9 @@
   },
   "ava": {
     "verbose": true,
-    "files": ["tests/*"]
+    "files": [
+      "tests/*"
+    ]
   },
   "repository": {
     "type": "git",
