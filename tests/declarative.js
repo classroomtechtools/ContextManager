@@ -128,10 +128,10 @@ test("withLock", t => {
 
   let expected = 'inside body';
   let dependencies = {
-    LockService_: MockedLockService,
-    SSA_: MockedSS
+    Lock_Service: MockedLockService,
+    Spread_sheet_App: MockedSS
   };
-  const ctx = ContextManager.usingWaitLock({timeout: 300}, dependencies);
+  const ctx = ContextManager.usingWaitLock({timeout: 300, ...dependencies});
   ctx.body = function () {
     return expected;
   };
@@ -140,7 +140,7 @@ test("withLock", t => {
 
   dependencies.LockService_ = MockedLockServiceThrows;
   t.throws(function () {
-    const ctx = ContextManager.usingWaitLock(300, dependencies);
+    const ctx = ContextManager.usingWaitLock({timeout: 300, ...dependencies});
     ctx.with(function () {
         // nothing
     });
@@ -159,3 +159,16 @@ test("param is sent to head, body, and tail", t => {
   t.deepEqual(ctx.state, ['p', 'p', 'p']);
 });
 
+test("create() with settings", t => {
+  const ctx = ContextManager.create({
+    state: [],
+    settings: {
+      head: function (p) { this.push(p-1); },
+      body: function (p) { this.push(p); return 0},
+      tail: function (p) { this.push(p+1); }
+    }
+  });
+  const result = ctx.execute(2);
+  t.deepEqual(ctx.state, [1, 2, 3]);
+  t.is(result, 0);
+});

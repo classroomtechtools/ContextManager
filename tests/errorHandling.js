@@ -16,9 +16,7 @@ test("default error handler does not swallow error in head", t => {
     throw new Error("Yikes");
   }
   t.throws(function () {
-    ctx.with(function () {
-
-    });
+    ctx.exectute();
   }, {instanceOf:Error});
 });
 

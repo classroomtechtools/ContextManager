@@ -22,7 +22,7 @@ export default [{
 	output: {
 		format: 'iife',
 		file: './project/TestBundle.js',
-		banner: '/* Bundle as defined from all files in tests/serverside/*.js */\nfunction Test(remote=true) {\n',
+		banner: '/* Bundle as defined from all files in src/tests/*.js */\nfunction Test(remote=true) {\n',
 		footer: 'try { return Log.get() } catch (e) {} \n}'
 	},
 	plugins

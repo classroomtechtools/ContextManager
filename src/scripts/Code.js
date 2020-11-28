@@ -3,16 +3,16 @@
  * @param {Object} [dependencies]
  * @return Context
  */
-function create(state=null, dependencies={}) {
-    return Import.ContextManager.create({state}, dependencies);
+function create(state=null, settings={}) {
+    return Import.ContextManager.create({state, settings});
 }
 
 /**
  * @param {Number} [timeout]
  * @param {String} [guard]
  */
-function usingWaitLock(timeout=500, guard="getScriptLock") {
-    return Import.ContextManager.usingWaitLock({timeout}, {guard});
+function usingWaitLock(timeout=500, guard="getScriptLock", dependencies={}) {
+    return Import.ContextManager.usingWaitLock({timeout, guard, ...dependencies});
 }
 
 /**

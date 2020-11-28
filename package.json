@@ -16,10 +16,13 @@
     "clasp:login": "clasp login",
     "clasp:logout": "clasp logout",
     "clasp:logs": "clasp logs",
-    "clasp:push": "npm run bundle && clasp push"
+    "clasp:push": "npm run bundle && clasp push",
+    "clasp:remote_test": "run-s clasp:push clasp:unittest",
+    "clasp:unittest": "clasp run Test"
   },
   "ava": {
-    "verbose": true
+    "verbose": true,
+    "files": ["tests/*"]
   },
   "repository": {
     "type": "git",
@@ -32,7 +35,6 @@
   },
   "homepage": "https://github.com/classroomtechtools/npm-contextmanager#readme",
   "devDependencies": {
-    "@classroomtechtools/virtualgs": "^1.6.0",
     "@google/clasp": "^2.3.0",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -40,9 +42,7 @@
     "@rollup/plugin-node-resolve": "^8.1.0",
     "npm-run-all": "^4.1.5",
     "rollup": "^2.19.0",
-    "ava": "^3.10.1"
-  },
-  "dependencies": {
-    "@classroomtechtools/virtualgs": "^1.6.1"
+    "ava": "^3.10.1",
+    "@classroomtechtools/unittesting": "^1.5.2"
   }
 }
