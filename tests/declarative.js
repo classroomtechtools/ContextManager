@@ -159,10 +159,10 @@ test("param is sent to head, body, and tail", t => {
   t.deepEqual(ctx.state, ['p', 'p', 'p']);
 });
 
-test("create() with settings", t => {
+test("create() with callbacks", t => {
   const ctx = ContextManager.create({
     state: [],
-    settings: {
+    callbacks: {
       head: function (p) { this.push(p-1); },
       body: function (p) { this.push(p); return 0},
       tail: function (p) { this.push(p+1); }

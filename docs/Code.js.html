@@ -184,7 +184,6 @@ function create(state=null, settings={}) {
 /**
  * A convenience function that creates and executes a context. See `create` for parameter settings specification. Since it executes immediately, `settings` and `settings.body` is required.
  *
- * @static
  * @param {object} settings={}
  * @param {bodyCallback} settings.body - see callback
  * @returns {any}
@@ -197,7 +196,6 @@ function execute(settings) {
 /**
  * Creates a context manager with predefined `head` and `tail`, useful for using lock service in tandem with spreadsheet services
  *
- * @static
  * @param {Number} [timeout] - the parameter passed to `waitLock` in the `head` method
  * @param {String} [guard] - a "guard" is referring to {@link https://developers.google.com/apps-script/reference/lock/lock-service#methods methods of `LockService`}; value of `user` converts to `getUserLock`, `script` converts to `getScriptLock` and `document` converts to `getDocumentLock`
  * @param {Object} [dependencies] - For mock tests using dependency injection
@@ -213,7 +211,6 @@ function usingWaitLock(timeout=500, guard="script", dependencies={}) {
 /**
  * Returns the class for advanced usage patterns
  *
- * @static
  * @example
  * // get the class object so we can potentially override functionality
  * const Context = ContextManager.klass();

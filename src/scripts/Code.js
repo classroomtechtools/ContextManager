@@ -14,14 +14,14 @@
  *
  * Inside each of the callbacks, the `this` keyword can be used to maintain state. After calling `execute` the `state` property will hold this state.
  *
- * **Note:** The programmer has the option of defining callbacks on the `settings` object "inline" in the `create` function directly, and/or defining them via "declaration" after `create` has returned. Declared callbacks will overwrite inline callbacks.
+ * **Note:** The programmer has the option of defining callbacks on the `callbacks` object "inline" in the `create` function directly, and/or defining them via "declaration" after `create` has returned. Declared callbacks will overwrite inline callbacks.
  *
  * @param {any} [state={}] - The initial state of `this` in callbacks
- * @param {object} [settings={}] - Optionally define the callbacks inline
- * @param {bodyCallback} [settings.body] same as body property below
- * @param {headTailCallback} [settings.head] same as head property below
- * @param {headTailCallback} [settings.tail] same as tail property below
- * @param {errorCallback} [settings.error] same as error property below
+ * @param {object} [callbacks={}] - Optionally define the callbacks inline
+ * @param {bodyCallback} [callbacks.body] same as body property below
+ * @param {headTailCallback} [callbacks.head] same as head property below
+ * @param {headTailCallback} [callbacks.tail] same as tail property below
+ * @param {errorCallback} [callbacks.error] same as error property below
  * @property {bodyCallback} body - function that does the main work, but which needs code that sets up or prepares before executing, and/or needs code that tears down or completes. {@link module:ContextManager.bodyCallback doc}
  * @property {headTailCallback} head - callback that does the set up or preparation.
  * @property {headTailCallback} tail - callback that does the tear down or post
@@ -75,44 +75,43 @@
  * Creates and returns a context object
  *
  * @param {any} [state=null] - the initial value of the context's `state` property, if null then will be a regular javascript object
- * @param {object} [settings={}]
- * @param {bodyCallback} [settings.body] - see callback
- * @param {headTailCallback} [settings.head] - see callback
- * @param {headTailCallback} [settings.tail] - see callback
- * @param {errorCallback} [settings.tail] - see callback
+ * @param {object} [callbacks={}]
+ * @param {bodyCallback} [callbacks.body] - see callback
+ * @param {headTailCallback} [callbacks.head] - see callback
+ * @param {headTailCallback} [callbacks.tail] - see callback
+ * @param {errorCallback} [callbacks.tail] - see callback
  * @returns {Context}
  *
- * @example ContextManager.create()  // default
- * @see https://classroomtechtools.github.io/ContextManager/
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#create
  */
-function create(state=null, settings={}) {
-    return Import.ContextManager.create({state, settings});
+function create(state, callbacks) {
+    state = state || null;
+    callbacks = callbacks || {};
+    return Import.ContextManager.create({state, callbacks});
 }
 
 /**
- * A convenience function that creates and executes a context. See `create` for parameter settings specification. Since it executes immediately, `settings` and `settings.body` is required.
+ * A convenience function that creates and executes a context. See `create` for parameter callbacks specification. Since it executes immediately, `callbacks` and `callbacks.body` is required.
  *
- * @static
- * @param {object} settings={}
- * @param {bodyCallback} settings.body - see callback
+ * @param {object} callbacks={}
+ * @param {bodyCallback} callbacks.body - see callback
  * @returns {any}
- * @see https://classroomtechtools.github.io/ContextManager/
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#execute
  */
-function execute(settings) {
-    return Import.ContextManager.create({state: null, settings}).execute();
+function execute(callbacks) {
+    return Import.ContextManager.create({state: null, callbacks}).execute();
 }
 
 /**
  * Creates a context manager with predefined `head` and `tail`, useful for using lock service in tandem with spreadsheet services
  *
- * @static
  * @param {Number} [timeout] - the parameter passed to `waitLock` in the `head` method
  * @param {String} [guard] - a "guard" is referring to {@link https://developers.google.com/apps-script/reference/lock/lock-service#methods methods of `LockService`}; value of `user` converts to `getUserLock`, `script` converts to `getScriptLock` and `document` converts to `getDocumentLock`
  * @param {Object} [dependencies] - For mock tests using dependency injection
  * @param {Object} dependencies.Spread_sheet_App - for mocking `.flush()`
  * @param {Object} dependencies.Lock_Service - for mocking `.getScriptLock` and `.waitLock`
  * @returns {Context}
- * @see https://classroomtechtools.github.io/ContextManager/
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock
  */
 function usingWaitLock(timeout=500, guard="script", dependencies={}) {
     return Import.ContextManager.usingWaitLock({timeout, guard}, dependencies);
@@ -121,7 +120,6 @@ function usingWaitLock(timeout=500, guard="script", dependencies={}) {
 /**
  * Returns the class for advanced usage patterns
  *
- * @static
  * @example
  * // get the class object so we can potentially override functionality
  * const Context = ContextManager.klass();

@@ -1,6 +1,6 @@
 
 // private stuff
-const _settings_ = Symbol('settings');
+const _callbacks_ = Symbol('callbacks');
 const _state_ = Symbol('state');
 
 const parseSettings = function (opt) {
@@ -15,9 +15,9 @@ const parseSettings = function (opt) {
 
 export class ContextManager {
 
-  constructor ({ state=null, settings={} }={}) {
+  constructor ({ state=null, callbacks={} }={}) {
     // setters will use the symbol properties to set accordingly
-    this.settings = settings;
+    this.callbacks = callbacks;
     this.state = state;
   }
 
@@ -60,23 +60,23 @@ export class ContextManager {
   }
 
   // set body (func) {
-  //   this[_settings_]._body = func;
+  //   this[_callbacks_]._body = func;
   // }
 
   set head (func) {
-    this[_settings_].head = func;
+    this[_callbacks_].head = func;
   }
 
   set tail (func) {
-    this[_settings_].tail = func;
+    this[_callbacks_].tail = func;
   }
 
   set error (func) {
-    this[_settings_].error = func;
+    this[_callbacks_].error = func;
   }
 
   set param (obj) {
-    this[_settings_].param = obj;
+    this[_callbacks_].param = obj;
   }
 
   get state () {
@@ -88,8 +88,8 @@ export class ContextManager {
     this[_state_] = obj === null ? this.defaultObject() : obj;
   }
 
-  set settings (obj) {
-    this[_settings_] = parseSettings(obj);
+  set callbacks (obj) {
+    this[_callbacks_] = parseSettings(obj);
   }
 
 
@@ -98,21 +98,21 @@ export class ContextManager {
   }
 
   set body (func) {
-    this[_settings_].body = func;
+    this[_callbacks_].body = func;
   }
 
   execute (param) {
-    const settings = this[_settings_];
-    if (!settings.body) throw new Error("Body method for context has not been defined");
-    settings.param = param;
+    const callbacks = this[_callbacks_];
+    if (!callbacks.body) throw new Error("Body method for context has not been defined");
+    callbacks.param = param;
 
     // return the result of "with(function () { }) where the body is the function"
-    return this.with(settings.body);
+    return this.with(callbacks.body);
   }
 
   dispatchError (err) {
     // error handler can return null to indicate it should be swallowed
-    return this[_settings_].error.call(this[_state_], err) === null;
+    return this[_callbacks_].error.call(this[_state_], err) === null;
   }
 
   /**
@@ -121,7 +121,7 @@ export class ContextManager {
   with (func) {
     let   result = undefined,
           state = this[_state_];
-    const settings = this[_settings_];
+    const callbacks = this[_callbacks_];
 
     // if state has already been defined (by manually setting), let it be, otherwise
     // set to the default object (which is an object)
@@ -130,8 +130,8 @@ export class ContextManager {
 
     try {
 
-      settings.head.call(state, settings.param);
-      result = func.call(state, settings.param);
+      callbacks.head.call(state, callbacks.param);
+      result = func.call(state, callbacks.param);
 
     } catch (err) {
       // execute the error handler
@@ -146,7 +146,7 @@ export class ContextManager {
       // execute the tail
       try {
 
-        settings.tail.call(state, settings.param);
+        callbacks.tail.call(state, callbacks.param);
 
       } catch (err) {
 

@@ -74,7 +74,6 @@
 /**
  * Creates and returns a context object
  *
- * @static
  * @param {any} [state=null] - the initial value of the context's `state` property, if null then will be a regular javascript object
  * @param {object} [settings={}]
  * @param {bodyCallback} [settings.body] - see callback
@@ -83,8 +82,7 @@
  * @param {errorCallback} [settings.tail] - see callback
  * @returns {Context}
  *
- * @example ContextManager.create()  // default
- * @see https://classroomtechtools.github.io/ContextManager/
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#create
  */
 function create(state=null, settings={}) {
     return Import.ContextManager.create({state, settings});
@@ -93,11 +91,10 @@ function create(state=null, settings={}) {
 /**
  * A convenience function that creates and executes a context. See `create` for parameter settings specification. Since it executes immediately, `settings` and `settings.body` is required.
  *
- * @static
  * @param {object} settings={}
  * @param {bodyCallback} settings.body - see callback
  * @returns {any}
- * @see https://classroomtechtools.github.io/ContextManager/
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#execute
  */
 function execute(settings) {
     return Import.ContextManager.create({state: null, settings}).execute();
@@ -106,14 +103,13 @@ function execute(settings) {
 /**
  * Creates a context manager with predefined `head` and `tail`, useful for using lock service in tandem with spreadsheet services
  *
- * @static
  * @param {Number} [timeout] - the parameter passed to `waitLock` in the `head` method
  * @param {String} [guard] - a "guard" is referring to {@link https://developers.google.com/apps-script/reference/lock/lock-service#methods methods of `LockService`}; value of `user` converts to `getUserLock`, `script` converts to `getScriptLock` and `document` converts to `getDocumentLock`
  * @param {Object} [dependencies] - For mock tests using dependency injection
  * @param {Object} dependencies.Spread_sheet_App - for mocking `.flush()`
  * @param {Object} dependencies.Lock_Service - for mocking `.getScriptLock` and `.waitLock`
  * @returns {Context}
- * @see https://classroomtechtools.github.io/ContextManager/
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock
  */
 function usingWaitLock(timeout=500, guard="script", dependencies={}) {
     return Import.ContextManager.usingWaitLock({timeout, guard}, dependencies);
@@ -122,7 +118,6 @@ function usingWaitLock(timeout=500, guard="script", dependencies={}) {
 /**
  * Returns the class for advanced usage patterns
  *
- * @static
  * @example
  * // get the class object so we can potentially override functionality
  * const Context = ContextManager.klass();
