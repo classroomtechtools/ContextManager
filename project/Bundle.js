@@ -17,6 +17,7 @@ const parseSettings = function (opt) {
   opt = opt || {};
   opt.param = opt.param || null;
   opt.head = opt.head || function () {};
+  opt.body = opt.body || function () {};
   opt.tail = opt.tail || function () {};
   opt.error = opt.error || function (err) {};
   return opt;
@@ -34,23 +35,28 @@ class ContextManager {
     return new ContextManager(...params);
   }
 
-  static usingWaitLock({timeout=500}={}, {
-                        guard="getScriptLock",
-                        LockService_= LockService,
-                        SSA_= window['Spreadsheet' + 'App']
+  static usingWaitLock({timeout=500,
+                        guard="getScriptLock", ...e1}={}, {
+                        Lock_Service= LockService,
+                        Spread_sheet_App= window['Spreadsheet' + 'App'], ...e2
                        }={})
   {
-    const ctx = new ContextManager();
+    const extra = Object.assign(e1, e2);
+    if (Object.keys(extra).length > 0) throw TypeError("Invalid param passed. One of these: " + Object.keys(extra).join(', '));
+    if (['script', 'document', 'user'].includes(guard.toLowerCase())) {
+      guard = 'get' + guard.charAt(0).toUpperCase() + guard.substr(1).toLowerCase() + 'Lock';
+    }
     if (!['getScriptLock', 'getDocumentLock', 'getUserLock'].includes(guard)) {
       throw TypeError(`No such guard ${guard}`);
     }
+    const ctx = new ContextManager();
     ctx.head = function () {
-        this.lock = LockService_[guard]();
+        this.lock = Lock_Service[guard]();
         this.lock.waitLock(timeout);
     };
 
     ctx.tail = function () {
-        SSA_.flush();
+        Spread_sheet_App.flush();
         this.lock.releaseLock();
     };
 

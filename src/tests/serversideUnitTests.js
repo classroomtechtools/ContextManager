@@ -21,9 +21,9 @@ describe("Create context manager", function () {
     });
     it("create() with settings", function () {
         const ctx = create([], {
-          head: (p) => this.push(1),
-          body: (p) => { this.push(p); return 0; },
-          tail: (p) => this.push(3)
+          head: function () { this.push(1); },
+          body: function (p) { this.push(p); return 0; },
+          tail: function () { this.push(3); }
         });
         const result = ctx.execute(2);
         assert.arrayEquals({actual: ctx.state, expected:[1, 2, 3]});
@@ -62,9 +62,9 @@ describe("dependencies can be defined", function () {
       }
     }
     it("uses dependencies", function () {
-        const ctx = usingWaitLock(500, "getScriptLock", {
-            SSA_: MockedSS,
-            LockService_: MockedLockService
+        const ctx = usingWaitLock(500, "script", {
+            Spread_sheet_App: MockedSS,
+            Lock_Service: MockedLockService
         });
     });
 });

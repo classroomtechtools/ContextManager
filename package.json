@@ -18,7 +18,8 @@
     "clasp:logs": "clasp logs",
     "clasp:push": "npm run bundle && clasp push",
     "clasp:remote_test": "run-s clasp:push clasp:unittest",
-    "clasp:unittest": "clasp run Test"
+    "clasp:unittest": "clasp run Test",
+    "generate-docs": "node_modules/.bin/jsdoc --configure jsdoc-config.json --verbose --readme README.md"
   },
   "ava": {
     "verbose": true,
@@ -37,14 +38,19 @@
   },
   "homepage": "https://github.com/classroomtechtools/npm-contextmanager#readme",
   "devDependencies": {
+    "@classroomtechtools/unittesting": "^1.5.2",
     "@google/clasp": "^2.3.0",
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-multi-entry": "^3.0.1",
     "@rollup/plugin-node-resolve": "^8.1.0",
-    "npm-run-all": "^4.1.5",
-    "rollup": "^2.19.0",
     "ava": "^3.10.1",
-    "@classroomtechtools/unittesting": "^1.5.2"
+    "jsdoc": "~3.6.6",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.19.0"
+  },
+  "dependencies": {
+    "jsdoc-template": "file:jsdoc-template",
+    "jsdoc-to-markdown": "^6.0.1"
   }
 }

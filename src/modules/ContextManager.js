@@ -26,13 +26,13 @@ export class ContextManager {
   }
 
   static usingWaitLock({timeout=500,
-                        guard="getScriptLock",
+                        guard="getScriptLock", ...e1}={}, {
                         Lock_Service= LockService,
-                        Spread_sheet_App= window['Spreadsheet' + 'App'],
-                        ...kwargs
+                        Spread_sheet_App= window['Spreadsheet' + 'App'], ...e2
                        }={})
   {
-    if (Object.keys(kwargs).length > 0) throw TypeError("Invalid param passed: " + Object.keys(kwargs).join(', '));
+    const extra = Object.assign(e1, e2);
+    if (Object.keys(extra).length > 0) throw TypeError("Invalid param passed. One of these: " + Object.keys(extra).join(', '));
     if (['script', 'document', 'user'].includes(guard.toLowerCase())) {
       guard = 'get' + guard.charAt(0).toUpperCase() + guard.substr(1).toLowerCase() + 'Lock';
     }

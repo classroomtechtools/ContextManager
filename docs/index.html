@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+      Home - Documentation
+  </title>
+
+  <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  
+
+  
+
+  <!-- start Mixpanel -->
+  <script type="text/javascript">(function(e,a){if(!a.__SV){var b=window;try{var c,l,i,j=b.location,g=j.hash;c=function(a,b){return(l=a.match(RegExp(b+"=([^&]*)")))?l[1]:null};g&&c(g,"state")&&(i=JSON.parse(decodeURIComponent(c(g,"state"))),"mpeditor"===i.action&&(b.sessionStorage.setItem("_mpcehash",g),history.replaceState(i.desiredHash||"",e.title,j.pathname+j.search)))}catch(m){}var k,h;window.mixpanel=a;a._i=[];a.init=function(b,c,f){function e(b,a){var c=a.split(".");2==c.length&&(b=b[c[0]],a=c[1]);b[a]=function(){b.push([a].concat(Array.prototype.slice.call(arguments,
+  0)))}}var d=a;"undefined"!==typeof f?d=a[f]=[]:f="mixpanel";d.people=d.people||[];d.toString=function(b){var a="mixpanel";"mixpanel"!==f&&(a+="."+f);b||(a+=" (stub)");return a};d.people.toString=function(){return d.toString(1)+".people (stub)"};k="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+  for(h=0;h<k.length;h++)e(d,k[h]);a._i.push([b,c,f])};a.__SV=1.2;b=e.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";c=e.getElementsByTagName("script")[0];c.parentNode.insertBefore(b,c)}})(document,window.mixpanel||[]);
+  mixpanel.init("1919205b2da72e4da3b9b6639b444d59");</script>
+  <!-- end Mixpanel -->
+</head>
+
+<body>
+  <svg style="display: none;">
+    <defs>
+      <symbol id="linkIcon" fill="#706d77" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0h24v24H0z" fill="none"/>
+          <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+  <label for="nav-trigger" class="navicon-button x">
+    <div class="navicon"></div>
+  </label>
+
+  <label for="nav-trigger" class="overlay"></label>
+
+  <div class="top-nav-wrapper">
+    <ul>
+      <li  class="active" >
+        <a href="index.html">
+          
+          
+            <svg fill="#0095dd" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+          
+        </a>
+      </li>
+
+      
+
+    </ul>
+  </div>
+
+  <nav>
+    <h3 class="reference-title">
+      Context Manager by Classroom Tech Tools
+    </h3>
+
+    
+
+    <h3>Classes</h3><ul><li id="Context-nav"><a href="Context.html">Context</a></li></ul><h3 id="global-nav">Global</h3><ul><li><a href="global.html#create">create</a></li><li><a href="global.html#execute">execute</a></li><li><a href="global.html#klass">klass</a></li><li><a href="global.html#usingWaitLock">usingWaitLock</a></li></ul>
+  </nav>
+
+  <div id="main">
+    
+
+    
+      
+
+
+
+    
+
+      
+
+
+  <section class="readme">
+    <article>
+      <h1>ContextManager</h1>
+<p>Create a &quot;body function&quot; which performs some target work, but which has some sort of &quot;set up&quot; and/or &quot;tear down&quot; work to do:</p>
+<ul>
+<li>Define a &quot;head function&quot; that executes immediately prior to the body function</li>
+<li>Define a &quot;tail function&quot; that executes upon completion of the body function, even if an error occurs</li>
+<li>Define an &quot;error function&quot; that is called when an error happens inside head, body, or tail.</li>
+<li>Save &quot;state&quot; by using the <code>this</code> keyword from within head, body, or tail</li>
+</ul>
+<h2>Getting Started</h2>
+<p>Project code is: <code>MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1</code>. The default identifier is <code>ContextManager</code>, you use the <code>.create</code> function to get the context variable, on which you declare the head, body, and tail as needed. See below for details.</p>
+<h2>Example 1</h2>
+<pre class="prettyprint source lang-js"><code>/**
+ * A simple (and useless) context manager that illustrates patterns
+ */
+function myFunction () {
+  const context = ContextManager.create();
+  context.head = function (param) {
+    // this will be state, by default just an object
+    this.inHead = true;
+  };
+  context.body = function (param) {
+    this.inBody = true;
+    return param;
+  };
+  context.tail = function (param) {
+    this.inTail = true;
+  }
+  const result = context.execute(&quot;echo&quot;);
+  Logger.log(result);  
+  //     echo
+  Logger.log(context.state);  
+  //     {inHead: true, inTail: true, inBody: true};
+}
+</code></pre>
+<p><strong>Sequences</strong></p>
+<p>By default, this is the order in which execution occurs. Please see below example for more clarity:</p>
+<ul>
+<li><code>1</code> is head function</li>
+<li><code>2</code> is body function</li>
+<li><code>3</code> is tail function</li>
+<li><code>-1</code> is error function</li>
+</ul>
+<p>Regular sequence (with no error occurring) <code>1 2 3</code> (head body tail)</p>
+<p>If error happens in head function, sequence is <code>1 -1 3</code> (head error tail, but not body).</p>
+<p>If an error occurs in body function, sequence is:
+<code>1 2 -1 3</code> (head body error tail)</p>
+<p>If an error occurs in the tail function, sequence is:
+<code>1 2 3, -1</code> (head, body, tail, error)</p>
+<p><em>Note</em>: If an error occurs in the error function, then the sequence will be interrupted at the <code>-1</code> stage with no further execution; that is the intended behaviour.</p>
+<p><strong>Error Handling</strong></p>
+<p>If the error function returns <code>null</code> (which by default it does not), the error is &quot;swallowed&quot; (not raised as an error). However, the error object itself is returned by <code>.execute</code>.</p>
+<p><strong>Body returning value</strong></p>
+<p>The body can return some value which is returned from <code>.execute</code>. If an error occurs in body function and the error function returns null, the error itself is returned instead. If an error occurs in the tail function (and thus the body function has successfully return some value or <code>undefined</code> if no explicit return) and the error function returns <code>null</code>, then the error object is given additional property <code>ctx.body.result</code> with the return value of the body function.</p>
+<h2>Application</h2>
+<p>A common pattern where this library would be useful is when you are working with spreadsheets and the <code>LockService</code> in tandem. In order to prevent your own script from overwriting your own updates, you need to create a lock at the script level, then do your writes, then you need to call <code>SpreadsheetApp.flush()</code> to write changes. When you enable the lock, you might get an error (as <code>waitLock</code> throws an error if it was unable to establish a lock).</p>
+<pre class="prettyprint source lang-js"><code>/* 
+/* Update spreadsheet
+/* @returns error message if error happens, else null
+*/
+function myFunction () {
+  const context = ContextManager.create();  // creates instance of class
+  // define head function
+  context.head = function () {
+    console.log(1);
+    this.error = null;
+    this.lock = LockService.getScriptLock();
+    this.lock.waitLock(300);  // timeout of 300
+  };
+  // now create body function with first parameter
+  context.body = function () {
+    console.log(2);
+    SpreadsheetApp... // update the spreadsheet, inside a lock
+    this.updated = true;
+    return this.error;
+  };
+  // define tail function
+  context.tail = function () {
+    console.log(3);
+    SpreadsheetApp.flush();
+    this.lock.releaseLock();
+  };
+  // define what happens when an error is thrown
+  context.error = function (err) {
+    console.log(-1);
+    this.error = err;
+    return null;  // &quot;instructs context manager to 'swallow' the error&quot;
+  };
+
+  return context.execute();
+  //             ^--- this actually executes it all
+}
+</code></pre>
+<h2>Example 2</h2>
+<p>The following silly example illustrates how <code>this</code> holds state throughout each of the functions, and how you can use <code>.execute</code> to pass parameters which can change how the body function works:</p>
+<pre class="prettyprint source lang-js"><code>function myFunction () {
+    // initialize
+    let ctx = ContextManager.create();
+    
+    // save an array to state
+    ctx.head = function () {
+        this.noun = &quot;World&quot;;
+    };
+      
+    // execute the main body, head and tail will be called
+    ctx.body = function (delim) {
+        this.expression = `Hello${delim}${this.noun}`;
+    };
+
+    // output the array to the logger
+    ctx.tail = function () {
+        Logger.log(this.expression);
+    };
+
+    ctx.execute(', ');
+    // Logger outputs &quot;Hello, World&quot;
+
+    ctx.execute(' ');
+    // Logger outputs &quot;Hello World&quot; (with no comma)
+}
+</code></pre>
+<p>By default, <code>this</code> is just a regular object. If you want it to be something else, then you can set its state ahead of time:</p>
+<pre class="prettyprint source lang-js"><code>function myFunction () {
+  let ctx = ContextManager.create({state: []});  // pass array which is state object
+
+  ctx.head = function () { 
+    this.push('heading');
+  };
+  ctx.tail = function () { 
+    this.push('tailing');
+    Logger.log(this.log.join('\n'));
+  };
+  ctx.error = function () { 
+    this.push('See no error, hear no error');
+    return null;  // return null swallows the error
+  };   
+  ctx.param = &quot;World&quot;;
+
+  ctx.with(function (text) {
+    this.push('Inside body');
+    throw Error(&quot;Error here, but does not actually error out&quot;);	
+  });
+}
+</code></pre>
+<p>Output:</p>
+<pre class="prettyprint source"><code>heading
+Inside body
+See no error, hear no error
+tailing
+</code></pre>
+<h2>Movitation</h2>
+<p>Context managers are a concept in Python that is really quite useful. In my case, I use them to implement unit testing, as a unit test may possibly fail, but we want the code to continue executing.</p>
+    </article>
+  </section>
+
+
+    
+
+
+<section>
+  <header>
+    
+      <h2>
+        
+        Code.js
+        
+      </h2>
+
+      
+    
+  </header>
+
+  <article>
+    <div class="container-overview">
+      
+        
+            <div class="description">
+              <p>ContextManager</p>
+            </div>
+        
+
+        
+
+<dl class="details">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+      <ul>
+        
+          <li>
+            <a href="mailto:classroomtechtools.ctt@gmail.com">Adam Morris</a>
+          </li>
+        
+      </ul>
+    </dd>
+  
+
+  
+
+  
+    <dt class="tag-license">License:</dt>
+    <dd class="tag-license">
+      <ul class="dummy">
+        <li>
+          MIT
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source">
+      <ul class="dummy">
+        <li>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line1">line 1</a>
+        </li>
+      </ul>
+    </dd>
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+        
+      
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+  </article>
+</section>
+
+
+
+
+  </div>
+
+  <br class="clear">
+
+  <footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a>
+  </footer>
+
+  <script src="scripts/linenumber.js"></script>
+  <script src="scripts/pagelocation.js"></script>
+
+  
+
+</body>
+</html>
