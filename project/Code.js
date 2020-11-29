@@ -16,12 +16,13 @@
  *
  * **Note:** The programmer has the option of defining callbacks on the `callbacks` object "inline" in the `create` function directly, and/or defining them via "declaration" after `create` has returned. Declared callbacks will overwrite inline callbacks.
  *
- * @param {any} [state={}] - The initial state of `this` in callbacks
- * @param {object} [callbacks={}] - Optionally define the callbacks inline
- * @param {bodyCallback} [callbacks.body] same as body property below
- * @param {headTailCallback} [callbacks.head] same as head property below
- * @param {headTailCallback} [callbacks.tail] same as tail property below
- * @param {errorCallback} [callbacks.error] same as error property below
+ * @param {object} [obj={}] - The object for destructuring
+ * @param {any} [obj.state={}] - The initial state of `this` in callbacks
+ * @param {object} [obj.callbacks={}] - Optionally define the callbacks inline
+ * @param {bodyCallback} [obj.callbacks.body] same as body property below
+ * @param {headTailCallback} [obj.callbacks.head] same as head property below
+ * @param {headTailCallback} [obj.callbacks.tail] same as tail property below
+ * @param {errorCallback} [obj.callbacks.error] same as error property below
  * @property {bodyCallback} body - function that does the main work, but which needs code that sets up or prepares before executing, and/or needs code that tears down or completes. {@link module:ContextManager.bodyCallback doc}
  * @property {headTailCallback} head - callback that does the set up or preparation.
  * @property {headTailCallback} tail - callback that does the tear down or post
@@ -74,7 +75,7 @@
 /**
  * Creates and returns a context object
  *
- * @param {any} [state=null] - the initial value of the context's `state` property, if `null` then will be a regular javascript object
+ * @param {any} [state={}] - the initial value of the context's `state` property available as `this` in callbacks
  * @param {object} [callbacks={}]
  * @param {bodyCallback} [callbacks.body] - see callback
  * @param {headTailCallback} [callbacks.head] - see callback
@@ -92,14 +93,16 @@ function create() {
 
 /**
  * A convenience function that creates and executes a context. See `create` for parameter callbacks specification. Since it executes immediately, `callbacks` and `callbacks.body` is required.
- *
- * @param {object} callbacks={}
- * @param {bodyCallback} callbacks.body - see callback
+ * @param {object} obj - The object to be destructured
+ * @param {any} [obj.param=null] - The parameter to pass on to callbacks
+ * @param {any} [obj.state={}] - Initial state
+ * @param {object} obj.callbacks - Callback, which at least must have body defined
+ * @param {bodyCallback} obj.callbacks.body - body callback
  * @returns {any}
  * @see https://classroomtechtools.github.io/ContextManager/global.html#execute
  */
-function execute(callbacks) {
-    return Import.ContextManager.create({state: null, callbacks}).execute();
+function execute({param=null, state={}, callbacks={body:()=>null}}) {
+    return Import.ContextManager.create({state, callbacks}).execute(param);
 }
 
 /**
