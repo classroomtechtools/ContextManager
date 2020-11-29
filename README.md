@@ -9,7 +9,9 @@ Create a "body function" which performs some target work, but which has some sor
 
 ## Getting Started
 
-Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.create` function to get the context variable, on which you declare the head, body, and tail as needed. See below for details.
+Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.create` function to get the context variable, on which you declare the head, body, and tail as needed.
+
+This package is documented with jsdoc, and so full API details are exposed via the [docs folder](docs/index.html). You'll notice that the online IDE has limited ability to read jsdoc properly, so please do use the API for a full explanation.
 
 ## Example 1
 

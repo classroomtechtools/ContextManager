@@ -74,7 +74,7 @@
 /**
  * Creates and returns a context object
  *
- * @param {any} [state=null] - the initial value of the context's `state` property, if null then will be a regular javascript object
+ * @param {any} [state=null] - the initial value of the context's `state` property, if `null` then will be a regular javascript object
  * @param {object} [callbacks={}]
  * @param {bodyCallback} [callbacks.body] - see callback
  * @param {headTailCallback} [callbacks.head] - see callback
@@ -84,9 +84,9 @@
  *
  * @see https://classroomtechtools.github.io/ContextManager/global.html#create
  */
-function create(state, callbacks) {
-    state = state || null;
-    callbacks = callbacks || {};
+function create() {
+    const state = arguments[0] || {};
+    const callbacks = arguments[1] || {};
     return Import.ContextManager.create({state, callbacks});
 }
 
@@ -113,7 +113,10 @@ function execute(callbacks) {
  * @returns {Context}
  * @see https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock
  */
-function usingWaitLock(timeout=500, guard="script", dependencies={}) {
+function usingWaitLock() {
+    const timeout = arguments[0] || 500;
+    const guard = arguments[1] || 'script';
+    const dependencies = arguments[2] || {};
     return Import.ContextManager.usingWaitLock({timeout, guard}, dependencies);
 }
 

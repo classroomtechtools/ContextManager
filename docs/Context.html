@@ -98,7 +98,7 @@
         <div class="class-description">
           <p>A <code>Context</code> instance is the primary object for this library; it is usually instantiated by calling <a href="global.html#create"><code>create</code></a>. Callbacks are available on this object that define  behaviour when invoked with <a href="global.html#execute"><code>execute</code></a>.</p>
 <p>Inside each of the callbacks, the <code>this</code> keyword can be used to maintain state. After calling <code>execute</code> the <code>state</code> property will hold this state.</p>
-<p><strong>Note:</strong> The programmer has the option of defining callbacks on the <code>settings</code> object &quot;inline&quot; in the <code>create</code> function directly, and/or defining them via &quot;declaration&quot; after <code>create</code> has returned. Declared callbacks will overwrite inline callbacks.</p>
+<p><strong>Note:</strong> The programmer has the option of defining callbacks on the <code>callbacks</code> object &quot;inline&quot; in the <code>create</code> function directly, and/or defining them via &quot;declaration&quot; after <code>create</code> has returned. Declared callbacks will overwrite inline callbacks.</p>
         </div>
       
     
@@ -121,7 +121,7 @@
       </svg>
     </a>
     <h4 class="name" id="Context">
-      <span class="type-signature"></span>new Context<span class="signature">(state<span class="signature-attributes">opt</span>, settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+      <span class="type-signature"></span>new Context<span class="signature">(state<span class="signature-attributes">opt</span>, callbacks<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
     </h4>
   </span>
 
@@ -208,7 +208,7 @@
     
       <tr>
         
-          <td class="name"><code>settings</code></td>
+          <td class="name"><code>callbacks</code></td>
         
 
         <td class="type">

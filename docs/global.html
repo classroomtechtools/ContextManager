@@ -173,7 +173,7 @@
       </svg>
     </a>
     <h4 class="name" id="create">
-      <span class="type-signature"></span>create<span class="signature">(state<span class="signature-attributes">opt</span>, settings<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Context.html">Context</a>}</span>
+      <span class="type-signature"></span>create<span class="signature">(state<span class="signature-attributes">opt</span>, callbacks<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Context.html">Context</a>}</span>
     </h4>
   </span>
 
@@ -256,7 +256,7 @@
         
 
         <td class="description last">
-          <p>the initial value of the context's <code>state</code> property, if null then will be a regular javascript object</p>
+          <p>the initial value of the context's <code>state</code> property, if <code>null</code> then will be a regular javascript object</p>
           
         </td>
       </tr>
@@ -264,7 +264,7 @@
     
       <tr>
         
-          <td class="name"><code>settings</code></td>
+          <td class="name"><code>callbacks</code></td>
         
 
         <td class="type">
@@ -529,7 +529,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line88">line 88</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line87">line 87</a>
         </li>
       </ul>
     </dd>
@@ -543,7 +543,7 @@
       <ul>
         
           <li>
-            <a href="https://classroomtechtools.github.io/ContextManager/">https://classroomtechtools.github.io/ContextManager/</a>
+            <a href="https://classroomtechtools.github.io/ContextManager/global.html#create">https://classroomtechtools.github.io/ContextManager/global.html#create</a>
           </li>
         
       </ul>
@@ -565,20 +565,6 @@
 
 
 
-  <div class="example-container">
-    <a class="link-icon" href="#create-examples">
-      <svg height="20" width="20" style="fill: black;">
-        <use xlink:href="#linkIcon"></use>
-      </svg>
-    </a>
-    <h5 id="create-examples">Example</h5>
-    
-
-  <pre class="prettyprint"><code>ContextManager.create()  // default</code></pre>
-
-
-  </div>
-
 
       
         
@@ -593,7 +579,7 @@
       </svg>
     </a>
     <h4 class="name" id="execute">
-      <span class="type-signature"></span>execute<span class="signature">(settings)</span><span class="type-signature"> &rarr; {any}</span>
+      <span class="type-signature"></span>execute<span class="signature">(callbacks)</span><span class="type-signature"> &rarr; {any}</span>
     </h4>
   </span>
 
@@ -602,7 +588,7 @@
 
 
   <div class="description">
-    <p>A convenience function that creates and executes a context. See <code>create</code> for parameter settings specification. Since it executes immediately, <code>settings</code> and <code>settings.body</code> is required.</p>
+    <p>A convenience function that creates and executes a context. See <code>create</code> for parameter callbacks specification. Since it executes immediately, <code>callbacks</code> and <code>callbacks.body</code> is required.</p>
   </div>
 
 
@@ -637,7 +623,7 @@
     
       <tr>
         
-          <td class="name"><code>settings</code></td>
+          <td class="name"><code>callbacks</code></td>
         
 
         <td class="type">
@@ -763,7 +749,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line100">line 100</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line101">line 101</a>
         </li>
       </ul>
     </dd>
@@ -777,7 +763,7 @@
       <ul>
         
           <li>
-            <a href="https://classroomtechtools.github.io/ContextManager/">https://classroomtechtools.github.io/ContextManager/</a>
+            <a href="https://classroomtechtools.github.io/ContextManager/global.html#execute">https://classroomtechtools.github.io/ContextManager/global.html#execute</a>
           </li>
         
       </ul>
@@ -865,7 +851,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line131">line 131</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line132">line 132</a>
         </li>
       </ul>
     </dd>
@@ -1222,7 +1208,7 @@ const context = new MyContext();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line115">line 115</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line116">line 116</a>
         </li>
       </ul>
     </dd>
@@ -1236,7 +1222,7 @@ const context = new MyContext();</code></pre>
       <ul>
         
           <li>
-            <a href="https://classroomtechtools.github.io/ContextManager/">https://classroomtechtools.github.io/ContextManager/</a>
+            <a href="https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock">https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock</a>
           </li>
         
       </ul>
@@ -1398,7 +1384,7 @@ const context = new MyContext();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line136">line 136</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line137">line 137</a>
         </li>
       </ul>
     </dd>
@@ -1562,7 +1548,7 @@ context.execute('hello from body callback');</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line163">line 163</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line164">line 164</a>
         </li>
       </ul>
     </dd>
@@ -1746,7 +1732,7 @@ result.message;  // "some fake error"</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line153">line 153</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line154">line 154</a>
         </li>
       </ul>
     </dd>
