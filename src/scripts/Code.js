@@ -84,7 +84,7 @@
  * @returns {Context}
  *
  * @example ContextManager.create()  // default
- * @see https://cnn.com
+ * @see https://classroomtechtools.github.io/ContextManager/
  */
 function create(state=null, settings={}) {
     return Import.ContextManager.create({state, settings});
@@ -97,6 +97,7 @@ function create(state=null, settings={}) {
  * @param {object} settings={}
  * @param {bodyCallback} settings.body - see callback
  * @returns {any}
+ * @see https://classroomtechtools.github.io/ContextManager/
  */
 function execute(settings) {
     return Import.ContextManager.create({state: null, settings}).execute();
@@ -112,6 +113,7 @@ function execute(settings) {
  * @param {Object} dependencies.Spread_sheet_App - for mocking `.flush()`
  * @param {Object} dependencies.Lock_Service - for mocking `.getScriptLock` and `.waitLock`
  * @returns {Context}
+ * @see https://classroomtechtools.github.io/ContextManager/
  */
 function usingWaitLock(timeout=500, guard="script", dependencies={}) {
     return Import.ContextManager.usingWaitLock({timeout, guard}, dependencies);
