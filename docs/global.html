@@ -250,13 +250,13 @@
         
           <td class="default">
             
-              null
+              {}
             
           </td>
         
 
         <td class="description last">
-          <p>the initial value of the context's <code>state</code> property, if <code>null</code> then will be a regular javascript object</p>
+          <p>the initial value of the context's <code>state</code> property available as <code>this</code> in callbacks</p>
           
         </td>
       </tr>
@@ -529,7 +529,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line87">line 87</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line88">line 88</a>
         </li>
       </ul>
     </dd>
@@ -579,7 +579,7 @@
       </svg>
     </a>
     <h4 class="name" id="execute">
-      <span class="type-signature"></span>execute<span class="signature">(callbacks)</span><span class="type-signature"> &rarr; {any}</span>
+      <span class="type-signature"></span>execute<span class="signature">(obj)</span><span class="type-signature"> &rarr; {any}</span>
     </h4>
   </span>
 
@@ -612,6 +612,55 @@
       
 
       
+
+      <th class="last">Description</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>obj</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      object
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+
+        
+
+        <td class="description last">
+          <p>The object to be destructured</p>
+          
+            <h6>Properties</h6>
+            
+
+<table class="params">
+  <thead>
+    <tr>
+      
+        <th>Name</th>
+      
+
+      <th>Type</th>
+
+      
+        <th>Attributes</th>
+      
+
+      
         <th>Default</th>
       
 
@@ -620,6 +669,96 @@
   </thead>
 
   <tbody>
+    
+      <tr>
+        
+          <td class="name"><code>param</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      any
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              null
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>The parameter to pass on to callbacks</p>
+          
+        </td>
+      </tr>
+
+    
+      <tr>
+        
+          <td class="name"><code>state</code></td>
+        
+
+        <td class="type">
+          
+            
+    <span class="param-type">
+      any
+    </span>
+
+    
+
+
+          
+        </td>
+
+        
+          <td class="attributes">
+            
+              &lt;optional><br>
+            
+
+            
+
+            
+          </td>
+        
+
+        
+          <td class="default">
+            
+              {}
+            
+          </td>
+        
+
+        <td class="description last">
+          <p>Initial state</p>
+          
+        </td>
+      </tr>
+
     
       <tr>
         
@@ -640,17 +779,23 @@
         </td>
 
         
+          <td class="attributes">
+            
+
+            
+
+            
+          </td>
+        
 
         
           <td class="default">
-            
-              {}
             
           </td>
         
 
         <td class="description last">
-          
+          <p>Callback, which at least must have body defined</p>
           
             <h6>Properties</h6>
             
@@ -697,7 +842,15 @@
         
 
         <td class="description last">
-          <p>see callback</p>
+          <p>body callback</p>
+          
+        </td>
+      </tr>
+
+    
+  </tbody>
+</table>
+
           
         </td>
       </tr>
@@ -749,7 +902,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line101">line 101</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line104">line 104</a>
         </li>
       </ul>
     </dd>
@@ -851,7 +1004,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line135">line 135</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line138">line 138</a>
         </li>
       </ul>
     </dd>
@@ -1190,7 +1343,7 @@ const context = new MyContext();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line116">line 116</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line119">line 119</a>
         </li>
       </ul>
     </dd>
@@ -1366,7 +1519,7 @@ const context = new MyContext();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line140">line 140</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line143">line 143</a>
         </li>
       </ul>
     </dd>
@@ -1530,7 +1683,7 @@ context.execute('hello from body callback');</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line167">line 167</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line170">line 170</a>
         </li>
       </ul>
     </dd>
@@ -1714,7 +1867,7 @@ result.message;  // "some fake error"</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line157">line 157</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line160">line 160</a>
         </li>
       </ul>
     </dd>
