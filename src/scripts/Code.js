@@ -74,7 +74,6 @@
 /**
  * Creates and returns a context object
  *
- * @static
  * @param {any} [state=null] - the initial value of the context's `state` property, if null then will be a regular javascript object
  * @param {object} [settings={}]
  * @param {bodyCallback} [settings.body] - see callback
