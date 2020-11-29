@@ -205,7 +205,10 @@ function execute(callbacks) {
  * @returns {Context}
  * @see https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock
  */
-function usingWaitLock(timeout=500, guard="script", dependencies={}) {
+function usingWaitLock() {
+    const timeout = arguments[0] || 500;
+    const guard = arguments[1] || 'script';
+    const dependencies = arguments[2] || {};
     return Import.ContextManager.usingWaitLock({timeout, guard}, dependencies);
 }
 
