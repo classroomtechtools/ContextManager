@@ -10,7 +10,7 @@
         "excludeTags": ["author"]
     },
     "opts": {
-        "template": "jsdoc-template",
+        "template": "node_modules/jsdoc-template",
         "destination": "./docs"
     }
 }
