@@ -1,17 +1,21 @@
 # ContextManager
 
-Create a "body function" which performs some target work, but which has some sort of "set up" and/or "tear down" work to do:
+Create a block of code, a context or "body" function, which performs some target work, but which has some sort of "set up" and/or "tear down" work to do. In addition to the required main body function, a context can:
 
-- Define a "head function" that executes immediately prior to the body function
-- Define a "tail function" that executes upon completion of the body function, even if an error occurs
-- Define an "error function" that is called when an error happens inside head, body, or tail.
-- Save "state" by using the `this` keyword from within head, body, or tail
+- Have a head function that executes immediately prior to the body function
+- Have a tail function that executes upon completion of the body function, even if an error occurs
+- Have an error that is called when an error happens inside head, body, or tail.
+- Manage state which is referenced via the `this` keyword from within head, body, or tail
 
 ## Getting Started
 
 Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.create` function to get the context variable, on which you declare the head, body, and tail as needed.
 
 This package is documented with jsdoc, and so [API details are fully documented](https://classroomtechtools.github.io/ContextManager/index.html). You'll notice that the online IDE has limited ability to read jsdoc properly, so please do use the API for a full explanation.
+
+This appscripts library is[also an npm module](https://www.npmjs.com/package/@classroomtechtools/contextmanager), installable with `npm install classroomtechtools/contextmanager` and imported via `import {ContextManager} from '@classroomtechtools/contextmanager'`.
+
+For completeness, this library is tested via unit testing on a node environment. See bottom for output.
 
 ## Example 1
 
@@ -63,11 +67,13 @@ If an error occurs in the tail function, sequence is:
 
 **Error Handling**
 
-If the error function returns `null` (which by default it does not), the error is "swallowed" (not raised as an error). However, the error object itself is returned by `.execute`.
+If the error function returns `null`, the error is "swallowed" (not raised as an error), and the error object itself is returned by `.execute`. If the error function has not been declared, the default behaviour is that it returns `undefined`.
 
 **Body returning value**
 
-The body can return some value which is returned from `.execute`. If an error occurs in body function and the error function returns null, the error itself is returned instead. If an error occurs in the tail function (and thus the body function has successfully return some value or `undefined` if no explicit return) and the error function returns `null`, then the error object is given additional property `ctx.body.result` with the return value of the body function.
+The body can return some value which is returned from `.execute`. If an error occurs in body function and the error function returns `null`, the error itself is returned instead. 
+
+If an error occurs in the tail function (and thus the body function has successfully return some value or `undefined` if no explicit return) and the error function returns `null`, then the returned error object is given additional property `ctx.body.result`.
 
 ## Application
 
@@ -182,3 +188,31 @@ tailing
 ## Movitation
 
 Context managers are a concept in Python that is really quite useful. In my case, I use them to implement unit testing, as a unit test may possibly fail, but we want the code to continue executing.
+
+## Unit Tests
+
+  ```
+  ✔ sequence › Sequence for when error occurs in head is 1, -1, 3
+  ✔ sequence › Sequence for when error occurs in body is 1, 2, -1, 3
+  ✔ sequence › Sequence for when error occurs in tail is 1, 2, 3, -1
+
+  ✔ declarative › set context.body and context.execute for multiple invocations
+  ✔ declarative › this keyword holds state, is available via state property
+  ✔ declarative › pass array as state to contructor
+  ✔ declarative › state can be set, if null reverts to the default object
+  ✔ declarative › subclassing to get different defaultObject
+  ✔ declarative › Saves state between head and tail calls, return this
+  ✔ declarative › param property is passed to with method as parameter
+  ✔ declarative › withLock
+  ✔ declarative › param is sent to head, body, and tail
+  ✔ declarative › create() with callbacks
+
+  ✔ errorHandling › default error handler does not swallow error
+  ✔ errorHandling › default error handler does not swallow error in head
+  ✔ errorHandling › error handler swallows error by returning null
+  ✔ errorHandling › if error occurs in head, body, or tail and is swallowed, the error obj is returned
+  ✔ errorHandling › if error occurs in tail but body returned something, it can be found in returned error as result property
+  
+  ✔ failures › usingWaitLock throws error on incorrect guard value
+  ✔ failures › usingWaitLock throws error on incorrect parameter
+```
