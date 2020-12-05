@@ -1,6 +1,6 @@
 {
   "name": "@classroomtechtools/contextmanager",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "A python-esque context manager for appscripts",
   "type": "module",
   "main": "src/modules/ContextManager.js",
