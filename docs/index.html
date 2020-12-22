@@ -92,16 +92,23 @@
   <section class="readme">
     <article>
       <h1>ContextManager</h1>
-<p>Create a &quot;body function&quot; which performs some target work, but which has some sort of &quot;set up&quot; and/or &quot;tear down&quot; work to do:</p>
+<p>Create a block of code, a context or &quot;body&quot; function, which performs some target work, but which has some sort of &quot;set up&quot; and/or &quot;tear down&quot; work to do. In addition to the required main body function, a context can:</p>
 <ul>
-<li>Define a &quot;head function&quot; that executes immediately prior to the body function</li>
-<li>Define a &quot;tail function&quot; that executes upon completion of the body function, even if an error occurs</li>
-<li>Define an &quot;error function&quot; that is called when an error happens inside head, body, or tail.</li>
-<li>Save &quot;state&quot; by using the <code>this</code> keyword from within head, body, or tail</li>
+<li>Have a head function that executes immediately prior to the body function</li>
+<li>Have a tail function that executes upon completion of the body function, even if an error occurs</li>
+<li>Have an error that is called when an error happens inside head, body, or tail.</li>
+<li>Manage state which is referenced via the <code>this</code> keyword from within head, body, or tail</li>
 </ul>
 <h2>Getting Started</h2>
-<p>Project code is: <code>MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1</code>. The default identifier is <code>ContextManager</code>, you use the <code>.create</code> function to get the context variable, on which you declare the head, body, and tail as needed.</p>
+<p>Import it as a library:</p>
+<ul>
+<li>Project code is: <code>MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1</code></li>
+<li>Script ID is: <code>1B2L-N3JRuqsXpURb8dyngYZwg0c37mHg7jKtSKYZn5FFjPxH0XM7Ito1</code></li>
+</ul>
+<p>The default identifier is <code>ContextManager</code>, you use the <code>.create</code> function to get the context variable, on which you declare the head, body, and tail as needed.</p>
 <p>This package is documented with jsdoc, and so <a href="https://classroomtechtools.github.io/ContextManager/index.html">API details are fully documented</a>. You'll notice that the online IDE has limited ability to read jsdoc properly, so please do use the API for a full explanation.</p>
+<p>This appscripts library is<a href="https://www.npmjs.com/package/@classroomtechtools/contextmanager">also an npm module</a>, installable with <code>npm install classroomtechtools/contextmanager</code> and imported via <code>import {ContextManager} from '@classroomtechtools/contextmanager'</code>.</p>
+<p>For completeness, this library is tested via unit testing on a node environment. See bottom for output.</p>
 <h2>Example 1</h2>
 <pre class="prettyprint source lang-js"><code>/**
  * A simple (and useless) context manager that illustrates patterns
@@ -142,9 +149,10 @@ function myFunction () {
 <code>1 2 3, -1</code> (head, body, tail, error)</p>
 <p><em>Note</em>: If an error occurs in the error function, then the sequence will be interrupted at the <code>-1</code> stage with no further execution; that is the intended behaviour.</p>
 <p><strong>Error Handling</strong></p>
-<p>If the error function returns <code>null</code> (which by default it does not), the error is &quot;swallowed&quot; (not raised as an error). However, the error object itself is returned by <code>.execute</code>.</p>
+<p>If the error function returns <code>null</code>, the error is &quot;swallowed&quot; (not raised as an error), and the error object itself is returned by <code>.execute</code>. If the error function has not been declared, the default behaviour is that it returns <code>undefined</code>.</p>
 <p><strong>Body returning value</strong></p>
-<p>The body can return some value which is returned from <code>.execute</code>. If an error occurs in body function and the error function returns null, the error itself is returned instead. If an error occurs in the tail function (and thus the body function has successfully return some value or <code>undefined</code> if no explicit return) and the error function returns <code>null</code>, then the error object is given additional property <code>ctx.body.result</code> with the return value of the body function.</p>
+<p>The body can return some value which is returned from <code>.execute</code>. If an error occurs in body function and the error function returns <code>null</code>, the error itself is returned instead.</p>
+<p>If an error occurs in the tail function (and thus the body function has successfully return some value or <code>undefined</code> if no explicit return) and the error function returns <code>null</code>, then the returned error object is given additional property <code>ctx.body.result</code>.</p>
 <h2>Application</h2>
 <p>A common pattern where this library would be useful is when you are working with spreadsheets and the <code>LockService</code> in tandem. In order to prevent your own script from overwriting your own updates, you need to create a lock at the script level, then do your writes, then you need to call <code>SpreadsheetApp.flush()</code> to write changes. When you enable the lock, you might get an error (as <code>waitLock</code> throws an error if it was unable to establish a lock).</p>
 <pre class="prettyprint source lang-js"><code>/* 
@@ -243,6 +251,31 @@ tailing
 </code></pre>
 <h2>Movitation</h2>
 <p>Context managers are a concept in Python that is really quite useful. In my case, I use them to implement unit testing, as a unit test may possibly fail, but we want the code to continue executing.</p>
+<h2>Unit Tests</h2>
+<pre class="prettyprint source"><code>✔ sequence › Sequence for when error occurs in head is 1, -1, 3
+✔ sequence › Sequence for when error occurs in body is 1, 2, -1, 3
+✔ sequence › Sequence for when error occurs in tail is 1, 2, 3, -1
+
+✔ declarative › set context.body and context.execute for multiple invocations
+✔ declarative › this keyword holds state, is available via state property
+✔ declarative › pass array as state to contructor
+✔ declarative › state can be set, if null reverts to the default object
+✔ declarative › subclassing to get different defaultObject
+✔ declarative › Saves state between head and tail calls, return this
+✔ declarative › param property is passed to with method as parameter
+✔ declarative › withLock
+✔ declarative › param is sent to head, body, and tail
+✔ declarative › create() with callbacks
+
+✔ errorHandling › default error handler does not swallow error
+✔ errorHandling › default error handler does not swallow error in head
+✔ errorHandling › error handler swallows error by returning null
+✔ errorHandling › if error occurs in head, body, or tail and is swallowed, the error obj is returned
+✔ errorHandling › if error occurs in tail but body returned something, it can be found in returned error as result property
+
+✔ failures › usingWaitLock throws error on incorrect guard value
+✔ failures › usingWaitLock throws error on incorrect parameter
+</code></pre>
     </article>
   </section>
 

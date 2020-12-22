@@ -96,11 +96,6 @@ test("param property is passed to with method as parameter", t => {
 });
 
 test("withLock", t => {
-  class MockedSS {
-    static flush () {
-      return null;
-    }
-  }
   class MockedLock {
     waitLock (timeout) {
       return null;
@@ -129,7 +124,6 @@ test("withLock", t => {
   let expected = 'inside body';
   let dependencies = {
     Lock_Service: MockedLockService,
-    Spread_sheet_App: MockedSS
   };
   const ctx = ContextManager.usingWaitLock({timeout: 300}, dependencies);
   ctx.body = function () {

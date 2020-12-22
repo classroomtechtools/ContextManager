@@ -203,10 +203,23 @@ function execute({param=null, state={}, callbacks={body:()=>null}}) {
  * @param {Number} [timeout] - the parameter passed to `waitLock` in the `head` method
  * @param {String} [guard] - a "guard" is referring to {@link https://developers.google.com/apps-script/reference/lock/lock-service#methods methods of `LockService`}; value of `user` converts to `getUserLock`, `script` converts to `getScriptLock` and `document` converts to `getDocumentLock`
  * @param {Object} [dependencies] - For mock tests using dependency injection
- * @param {Object} dependencies.Spread_sheet_App - for mocking `.flush()`
  * @param {Object} dependencies.Lock_Service - for mocking `.getScriptLock` and `.waitLock`
  * @returns {Context}
  * @see https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock
+ * @example
+ * // same as this:
+ * const ctx = ContextManager.usingWaitLock(500, 'script');
+ * ctx.body = function (param) {
+ *   // do your work here
+ *   return param + 1;
+ * };
+ * // run it
+ * // first creates lock for you with timeout of 500
+ * // then executes your body function above
+ * // then releases lock for you
+ * const result = ctx.execute(1);  X
+ * Logger.log(result);  // 2
+ *
  */
 function usingWaitLock() {
     const timeout = arguments[0] || 500;

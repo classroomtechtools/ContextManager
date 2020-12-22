@@ -9,7 +9,12 @@ Create a block of code, a context or "body" function, which performs some target
 
 ## Getting Started
 
-Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`. The default identifier is `ContextManager`, you use the `.create` function to get the context variable, on which you declare the head, body, and tail as needed.
+Import it as a library:
+
+- Project code is: `MY_Ti1O7GqK78zDPukpS-gnnHlT3Tf0e1`
+- Script ID is: `1B2L-N3JRuqsXpURb8dyngYZwg0c37mHg7jKtSKYZn5FFjPxH0XM7Ito1`
+
+The default identifier is `ContextManager`, you use the `.create` function to get the context variable, on which you declare the head, body, and tail as needed.
 
 This package is documented with jsdoc, and so [API details are fully documented](https://classroomtechtools.github.io/ContextManager/index.html). You'll notice that the online IDE has limited ability to read jsdoc properly, so please do use the API for a full explanation.
 
@@ -44,7 +49,28 @@ function myFunction () {
 }
 ```
 
-**Sequences**
+## Example 2
+
+```js
+/**
+ * A simple (and vastly more useful) context manager
+ * that puts the body function inside of a script-level lock
+ * @see https://classroomtechtools.github.io/ContextManager/global.html#usingWaitLock
+ */
+function myFunction () {
+  const context = ContextManager.usingWaitLock(500, 'script');
+  context.body = function (param) {
+    return param + 1;
+  };
+  const result = context.execute("echo");
+  Logger.log(result);  
+  //     2
+}
+```
+
+## Implementation
+
+In many cases, you may not need to be aware of the below minutiae, but in provided just in case.
 
 By default, this is the order in which execution occurs. Please see below example for more clarity:
 
@@ -118,7 +144,7 @@ function myFunction () {
 }
 ```
 
-## Example 2
+## Example 3
 
 The following silly example illustrates how `this` holds state throughout each of the functions, and how you can use `.execute` to pass parameters which can change how the body function works:
 

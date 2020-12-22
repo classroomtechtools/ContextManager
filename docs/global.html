@@ -1004,7 +1004,7 @@
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line138">line 138</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line151">line 151</a>
         </li>
       </ul>
     </dd>
@@ -1241,35 +1241,6 @@ const context = new MyContext();</code></pre>
     
       <tr>
         
-          <td class="name"><code>Spread_sheet_App</code></td>
-        
-
-        <td class="type">
-          
-            
-    <span class="param-type">
-      Object
-    </span>
-
-    
-
-
-          
-        </td>
-
-        
-
-        
-
-        <td class="description last">
-          <p>for mocking <code>.flush()</code></p>
-          
-        </td>
-      </tr>
-
-    
-      <tr>
-        
           <td class="name"><code>Lock_Service</code></td>
         
 
@@ -1343,7 +1314,7 @@ const context = new MyContext();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line119">line 119</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line132">line 132</a>
         </li>
       </ul>
     </dd>
@@ -1378,6 +1349,31 @@ const context = new MyContext();</code></pre>
 
 
 
+
+  <div class="example-container">
+    <a class="link-icon" href="#usingWaitLock-examples">
+      <svg height="20" width="20" style="fill: black;">
+        <use xlink:href="#linkIcon"></use>
+      </svg>
+    </a>
+    <h5 id="usingWaitLock-examples">Example</h5>
+    
+
+  <pre class="prettyprint"><code>// same as this:
+const ctx = ContextManager.usingWaitLock(500, 'script');
+ctx.body = function (param) {
+  // do your work here
+  return param + 1;
+};
+// run it
+// first creates lock for you with timeout of 500
+// then executes your body function above
+// then releases lock for you
+const result = ctx.execute(1);  X
+Logger.log(result);  // 2</code></pre>
+
+
+  </div>
 
 
       
@@ -1519,7 +1515,7 @@ const context = new MyContext();</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line143">line 143</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line156">line 156</a>
         </li>
       </ul>
     </dd>
@@ -1683,7 +1679,7 @@ context.execute('hello from body callback');</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line170">line 170</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line183">line 183</a>
         </li>
       </ul>
     </dd>
@@ -1867,7 +1863,7 @@ result.message;  // "some fake error"</code></pre>
     <dd class="tag-source">
       <ul class="dummy">
         <li>
-          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line160">line 160</a>
+          <a href="Code.js.html">Code.js</a>, <a href="Code.js.html#line173">line 173</a>
         </li>
       </ul>
     </dd>

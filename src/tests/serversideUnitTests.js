@@ -32,11 +32,6 @@ describe("Create context manager", function () {
 });
 
 describe("dependencies can be defined", function () {
-    class MockedSS {
-      static flush () {
-        return null;
-      }
-    }
     class MockedLock {
       waitLock (timeout) {
         return null;
@@ -63,7 +58,6 @@ describe("dependencies can be defined", function () {
     }
     it("uses dependencies", function () {
         const ctx = usingWaitLock(500, "script", {
-            Spread_sheet_App: MockedSS,
             Lock_Service: MockedLockService
         });
     });

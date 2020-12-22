@@ -3,7 +3,6 @@ import {ContextManager} from '../src/modules/ContextManager.js';
 
 const nullDependencies = {
     Lock_Service: null,
-    Spread_sheet_App: null
 };
 
 test("usingWaitLock throws error on incorrect guard value", t => {
