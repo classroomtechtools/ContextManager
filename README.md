@@ -93,7 +93,7 @@ If an error occurs in the tail function, sequence is:
 
 **Error Handling**
 
-If the error function returns `null`, the error is "swallowed" (not raised as an error), and the error object itself is returned by `.execute`. If the error function has not been declared, the default behaviour is that it returns `undefined`.
+If the error function returns `null`, the error is "muted", which means it is not raised as an error, same behaviour as `muteHttpExceptions` when using `UrlFetchApp.fetch`. Return null in the error function means that any error, if it occurs, it is returned by `.execute`. If the error function has not been declared, the default behaviour is that it is not muted, i.e. it is raised.
 
 **Body returning value**
 
@@ -136,7 +136,7 @@ function myFunction () {
   context.error = function (err) {
     console.log(-1);
     this.error = err;
-    return null;  // "instructs context manager to 'swallow' the error"
+    return null;  // "instructs context manager to 'mute' the error"
   };
 
   return context.execute();
@@ -191,7 +191,7 @@ function myFunction () {
   };
   ctx.error = function () { 
     this.push('See no error, hear no error');
-    return null;  // return null swallows the error
+    return null;  // return null mutes the error
   };   
   ctx.param = "World";
 
@@ -233,10 +233,10 @@ Context managers are a concept in Python that is really quite useful. In my case
   ✔ declarative › param is sent to head, body, and tail
   ✔ declarative › create() with callbacks
 
-  ✔ errorHandling › default error handler does not swallow error
-  ✔ errorHandling › default error handler does not swallow error in head
-  ✔ errorHandling › error handler swallows error by returning null
-  ✔ errorHandling › if error occurs in head, body, or tail and is swallowed, the error obj is returned
+  ✔ errorHandling › default error handler does not mute error
+  ✔ errorHandling › default error handler does not mute error in head
+  ✔ errorHandling › error handler mutes error by returning null
+  ✔ errorHandling › if error occurs in head, body, or tail and is muted, the error obj is returned
   ✔ errorHandling › if error occurs in tail but body returned something, it can be found in returned error as result property
   
   ✔ failures › usingWaitLock throws error on incorrect guard value
