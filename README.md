@@ -62,7 +62,7 @@ function myFunction () {
   context.body = function (param) {
     return param + 1;
   };
-  const result = context.execute("echo");
+  const result = context.execute(1);
   Logger.log(result);  
   //     2
 }
@@ -144,7 +144,7 @@ function myFunction () {
 }
 ```
 
-## Example 3
+## Using `this` to manage state
 
 The following silly example illustrates how `this` holds state throughout each of the functions, and how you can use `.execute` to pass parameters which can change how the body function works:
 
