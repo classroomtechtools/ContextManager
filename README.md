@@ -18,7 +18,7 @@ The default identifier is `ContextManager`, you use the `.create` function to ge
 
 This package is documented with jsdoc, and so [API details are fully documented](https://classroomtechtools.github.io/ContextManager/index.html). You'll notice that the online IDE has limited ability to read jsdoc properly, so please do use the API for a full explanation.
 
-This appscripts library is[also an npm module](https://www.npmjs.com/package/@classroomtechtools/contextmanager), installable with `npm install classroomtechtools/contextmanager` and imported via `import {ContextManager} from '@classroomtechtools/contextmanager'`.
+This appscripts library is [also an npm module](https://www.npmjs.com/package/@classroomtechtools/contextmanager), installable with `npm install classroomtechtools/contextmanager` and imported via `import {ContextManager} from '@classroomtechtools/contextmanager'`.
 
 For completeness, this library is tested via unit testing on a node environment. See bottom for output.
 
@@ -217,7 +217,7 @@ Context managers are a concept in Python that is really quite useful. In my case
 
 ## Unit Tests
 
-  ```
+```
   ✔ sequence › Sequence for when error occurs in head is 1, -1, 3
   ✔ sequence › Sequence for when error occurs in body is 1, 2, -1, 3
   ✔ sequence › Sequence for when error occurs in tail is 1, 2, 3, -1
